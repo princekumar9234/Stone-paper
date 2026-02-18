@@ -1,117 +1,299 @@
+:root {
+  --bg-color: #0f172a;
+  --card-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --primary-accent: #38bdf8;
+  --secondary-accent: #818cf8;
+  --text-main: #f8fafc;
+  --text-dim: #94a3b8;
+  --win-color: #4ade80;
+  --loss-color: #f87171;
+  --draw-color: #ffffff;
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --heading-font: 'Outfit', sans-serif;
+}
+
 * {
   margin: 0;
   padding: 0;
-  text-align: center;
+  box-sizing: border-box;
 }
 
-h1 {
-  background-color: #081b31;
-  color: #fff;
-  height: 5rem;
-  line-height: 5rem;
-}
-
-.choice {
-  height: 165px;
-  width: 165px;
-  border-radius: 50%;
+body {
+  background-color: var(--bg-color);
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(129, 140, 248, 0.1) 0%, transparent 40%);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-x: hidden;
 }
 
-.choice:hover {
-  cursor: pointer;
-  background-color: #081b31;
+.app-container {
+  width: 100%;
+  max-width: 900px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  animation: fadeIn 0.8s ease-out;
 }
 
-img {
-  height: 150px;
-  width: 150px;
-  object-fit: cover;
-  border-radius: 50%;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+header {
+  text-align: center;
+}
+
+.gradient-text {
+  font-family: var(--heading-font);
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(to right, var(--primary-accent), var(--secondary-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  color: var(--text-dim);
+  font-size: 1.1rem;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
 }
 
 .choices {
   display: flex;
   justify-content: center;
+  gap: 2.5rem;
+  perspective: 1000px;
+}
+
+.choice {
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.choice-inner {
+  width: 160px;
+  height: 160px;
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 2rem;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 3rem;
-  margin-top: 5rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.choice:hover {
+  transform: translateY(-10px) scale(1.05) rotate(2deg);
+}
+
+.choice:hover .choice-inner {
+  border-color: var(--primary-accent);
+  box-shadow: 0 20px 30px -10px rgba(56, 189, 248, 0.3), inset 0 0 20px rgba(56, 189, 248, 0.05);
+}
+
+.choice:active {
+  transform: scale(0.95);
+}
+
+.choice img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+  transition: transform 0.3s ease;
+}
+
+.choice:hover img {
+  transform: scale(1.1);
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
 }
 
 .score-board {
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 2rem;
-  margin-top: 3rem;
-  gap: 5rem;
+  background: var(--card-bg);
+  padding: 1.5rem 2.5rem;
+  border-radius: 2rem;
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(8px);
+  gap: 3rem;
 }
 
-#user-score,
-#comp-score {
-  font-size: 4rem;
+.score-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.score-label {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.score-value {
+  font-size: 3rem;
+  font-weight: 800;
+  font-family: var(--heading-font);
+}
+
+.separator {
+  color: var(--text-dim);
+  font-weight: 700;
+  opacity: 0.5;
 }
 
 .msg-container {
-  margin-top: 5rem;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #msg {
-  background-color: #081b31;
-  color: #fff;
-  font-size: 2rem;
-  display: inline;
-  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 1rem 2rem;
   border-radius: 1rem;
+  transition: all 0.3s ease;
+  text-align: center;
+  max-width: 500px;
 }
 
-/* ================== Responsive for Mobile ================== */
-@media (max-width: 546px) {
+footer {
+  text-align: center;
+}
 
-  h1 {
-    font-size: 1.5rem;
-    height: 4rem;
-    line-height: 4rem;
+.secondary-btn {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--text-dim);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  border-color: var(--text-dim);
+}
+
+/* Response Utilities - Dynamic classes applied via JS */
+.winning-msg {
+  background: rgba(74, 222, 128, 0.15);
+  color: var(--win-color);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.losing-msg {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--loss-color);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.draw-msg {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--draw-color);
+  border: 1px solid var(--glass-border);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .gradient-text {
+    font-size: 2.75rem;
+  }
+  
+  .choice-inner {
+    width: 130px;
+    height: 130px;
+    border-radius: 1.5rem;
+  }
+  
+  .choice img {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .choices {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 1.5rem;
+    gap: 2rem;
+  }
+  
+  .gradient-text {
+    font-size: 2.25rem;
+  }
+  
+  .subtitle {
+    font-size: 0.95rem;
   }
 
   .choices {
-    flex-direction: column;
-    gap: 2rem;
-    margin-top: 3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
   }
-
-  .choice {
-    height: 120px;
-    width: 120px;
+  
+  .choice-inner {
+    width: 100px;
+    height: 100px;
+    border-radius: 1rem;
   }
-
-  img {
-    height: 105px;
-    width: 105px;
+  
+  .choice img {
+    width: 55px;
+    height: 55px;
   }
-
+  
   .score-board {
-    flex-direction: column;
-    gap: 2rem;
-    font-size: 1.5rem;
-    margin-top: 2rem;
+    padding: 1rem 1.5rem;
+    gap: 1.5rem;
   }
-
-  #user-score,
-  #comp-score {
-    font-size: 2.5rem;
+  
+  .score-value {
+    font-size: 2.25rem;
   }
-
-  .msg-container {
-    margin-top: 3rem;
-    padding: 0 1rem;
-  }
-
+  
   #msg {
-    font-size: 1.2rem;
-    display: block;
+    font-size: 1.25rem;
+    padding: 0.75rem 1.25rem;
   }
 }
 

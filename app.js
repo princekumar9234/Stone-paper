@@ -3,9 +3,9 @@ let compScore = 0;
 
 const choices = document.querySelectorAll(".choice");
 const msg = document.querySelector("#msg");
-
 const userScorePara = document.querySelector("#user-score");
 const compScorePara = document.querySelector("#comp-score");
+const resetBtn = document.querySelector("#reset-btn");
 
 const genCompChoice = () => {
   const options = ["rock", "paper", "scissors"];
@@ -13,42 +13,48 @@ const genCompChoice = () => {
   return options[randIdx];
 };
 
+const updateMsgStyle = (result) => {
+  msg.classList.remove("winning-msg", "losing-msg", "draw-msg");
+  if (result === "win") {
+    msg.classList.add("winning-msg");
+  } else if (result === "loss") {
+    msg.classList.add("losing-msg");
+  } else {
+    msg.classList.add("draw-msg");
+  }
+};
+
 const drawGame = () => {
-  msg.innerText = "Game was Draw. Play again.";
-  msg.style.backgroundColor = "#081b31";
+  msg.innerText = "It's a Draw! 🤝 Try again.";
+  updateMsgStyle("draw");
 };
 
 const showWinner = (userWin, userChoice, compChoice) => {
   if (userWin) {
     userScore++;
     userScorePara.innerText = userScore;
-    msg.innerText = `You win! Your ${userChoice} beats ${compChoice}`;
-    msg.style.backgroundColor = "green";
+    msg.innerText = `You Win! 🎉 ${userChoice} beats ${compChoice}`;
+    updateMsgStyle("win");
   } else {
     compScore++;
     compScorePara.innerText = compScore;
-    msg.innerText = `You lost. ${compChoice} beats your ${userChoice}`;
-    msg.style.backgroundColor = "red";
+    msg.innerText = `You Lose! 💀 ${compChoice} beats ${userChoice}`;
+    updateMsgStyle("loss");
   }
 };
 
 const playGame = (userChoice) => {
-  //Generate computer choice
   const compChoice = genCompChoice();
 
   if (userChoice === compChoice) {
-    //Draw Game
     drawGame();
   } else {
     let userWin = true;
     if (userChoice === "rock") {
-      //scissors, paper
       userWin = compChoice === "paper" ? false : true;
     } else if (userChoice === "paper") {
-      //rock, scissors
       userWin = compChoice === "scissors" ? false : true;
     } else {
-      //rock, paper
       userWin = compChoice === "rock" ? false : true;
     }
     showWinner(userWin, userChoice, compChoice);
@@ -61,3 +67,13 @@ choices.forEach((choice) => {
     playGame(userChoice);
   });
 });
+
+resetBtn.addEventListener("click", () => {
+  userScore = 0;
+  compScore = 0;
+  userScorePara.innerText = userScore;
+  compScorePara.innerText = compScore;
+  msg.innerText = "Play your move";
+  msg.classList.remove("winning-msg", "losing-msg", "draw-msg");
+});
+
